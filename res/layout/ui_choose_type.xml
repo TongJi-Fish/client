@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- <include layout="@layout/main_layout" /> -->
+<LinearLayout 
+	android:orientation="vertical" 
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent"
+	android:gravity="center">
+	<!-- <include layout="@layout/ui_template_title" /> -->
+	
+	<!-- <include layout="@layout/ui_template_maintab" 
+	    android:gravity="bottom"/> -->
+	    
+	<Button
+                android:id="@+id/drive_car"
+                android:layout_width="200dp"
+	    		android:layout_height="100dp"
+                android:layout_marginTop="100dp"
+                android:text="我要开车" />
+
+	<Button
+                android:id="@+id/carpool"
+                android:layout_width="200dp"
+	    		android:layout_height="100dp"
+                android:layout_marginTop="-200dp"
+                android:text="我要拼车" />
+
+
+</LinearLayout>
+</merge>

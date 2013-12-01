@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: pingle-client
+Bundle-SymbolicName: pingle-client
+Bundle-Version: 1.0.0.qualifier
+Export-Package: com.app.ipinle.base,
+ com.app.ipinle.model,
+ com.app.ipinle.ui,
+ com.app.ipinle.util,
+ com.example.ipingle
