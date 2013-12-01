@@ -29,7 +29,11 @@ public class BaseHandler extends Handler {
 					ui.hideLoadBar();
 					taskId = msg.getData().getInt("task");
 					result = msg.getData().getString("data");
+<<<<<<< HEAD
 					Log.i(C.debug.login, "task:"+taskId+";result:"+result);
+=======
+					//Log.i(C.debug.login, "task:"+taskId+";result:"+result);
+>>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 					if (result != null) {
 						ui.onTaskComplete(taskId, AppUtil.getMessage(result));
 					} else if (!AppUtil.isEmptyInt(taskId)) {

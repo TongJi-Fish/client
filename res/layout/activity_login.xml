@@ -3,13 +3,18 @@
     android:id="@+id/widget33"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+<<<<<<< HEAD
     android:background="@drawable/background_login"
+=======
+    android:background="#ff3399ff"
+>>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
     android:orientation="vertical" >
 
     <TextView
         android:id="@+id/widget34"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
         android:layout_gravity="center_horizontal"
         android:orientation="vertical"
         android:layout_marginLeft="0dp"
@@ -18,10 +23,18 @@
         android:textSize="35sp"
         android:typeface="serif"
          >
+=======
+        android:layout_marginLeft="125dp"
+        android:layout_marginTop="50dp"
+        android:text="e 拼"
+        android:textSize="35sp"
+        android:typeface="serif" >
+>>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
     </TextView>
 
     <EditText
         android:id="@+id/userName"
+<<<<<<< HEAD
         android:layout_width="300dp"
         android:layout_height="54dp"
         android:layout_marginLeft="0dp"
@@ -32,10 +45,21 @@
         android:background="#ffffffcc"
         android:textColor="#ff9999ff"
         android:textSize="18sp" >
+=======
+        android:layout_width="213dp"
+        android:layout_height="54dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="35dp"
+        android:hint="用户名"
+        android:textColor="#ffcccccc"
+        android:textSize="18sp" 
+        android:singleLine="true">
+>>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
     </EditText>
 
     <EditText
         android:id="@+id/userPassword"
+<<<<<<< HEAD
         android:layout_width="300dp"
         android:layout_height="54dp"
         android:layout_marginLeft="0dp"
@@ -47,12 +71,24 @@
         android:background="#ffffffcc"
         android:textColor="#ff9999ff"
         android:textSize="18sp" >
+=======
+        android:layout_width="213dp"
+        android:layout_height="54dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="5dp"
+        android:password="true"
+        android:hint="密码"
+        android:textColor="#ffcccccc"
+        android:textSize="18sp"
+        android:singleLine="true" >
+>>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
     </EditText>
 
     <Button
         android:id="@+id/login"
         android:layout_width="161dp"
         android:layout_height="39dp"
+<<<<<<< HEAD
         android:layout_marginLeft="0dp"
         android:layout_marginTop="30dp"
         android:layout_gravity="center_horizontal"
@@ -63,5 +99,18 @@
         android:textStyle="bold"
         android:typeface="serif" >
     </Button>
+=======
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="30dp"
+        android:background="#ff3333ff"
+        android:text="登陆"
+        android:textColor="#ff0099ff"
+        android:textStyle="bold"
+        android:typeface="serif" >
+    </Button>
+    
+    <include layout="@layout/ui_load_bar" ></include>
+        
+>>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 
 </LinearLayout>

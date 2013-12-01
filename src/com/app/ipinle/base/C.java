@@ -55,6 +55,10 @@ public class C {
 		public static final String network			= "网络错误";
 		public static final String message			= "消息错误";
 		public static final String jsonFormat		= "消息格式错误";
+<<<<<<< HEAD
+=======
+		public static final String loginFailed		= "用户名或密码错误";
+>>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 	}
 	
 //	////////////////////////////////////////////////////////////////////////////////////////////////
