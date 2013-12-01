@@ -33,25 +33,6 @@ public class BaseTask extends Activity {
 	}
 	
 	public void onStart () {
-<<<<<<< HEAD
-//		Log.w("BaseTask", "onStart");
-	}
-	
-	public void onComplete () {
-//		Log.w("BaseTask", "onComplete");
-	}
-	
-	public void onComplete (String httpResult) {
-//		Log.w("BaseTask", "onComplete");
-	}
-	
-	public void onError (String error) {
-//		Log.w("BaseTask", "onError");
-	}
-	
-	public void onStop () {
-//		Log.w("BaseTask", "onStop");
-=======
 //		//Log.w("BaseTask", "onStart");
 	}
 	
@@ -69,7 +50,6 @@ public class BaseTask extends Activity {
 	
 	public void onStop () {
 //		//Log.w("BaseTask", "onStop");
->>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 	}
 	
 }

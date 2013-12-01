@@ -65,11 +65,6 @@ public class BaseTaskPool {
 			this.taskArgs = taskArgs;
 			this.baseTask = baseTask;
 			this.delayTime = delayTime;
-<<<<<<< HEAD
-			//Log.i(C.debug.BaseTaskPool,this.context.toString()+" "+this.taskUrl+" "+this.taskArgs.toString()+" "+this.baseTask.toString());
-=======
-			////Log.i(C.debug.BaseTaskPool,this.context.toString()+" "+this.taskUrl+" "+this.taskArgs.toString()+" "+this.baseTask.toString());
->>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 		}
 		@Override
 		public void run() {
@@ -93,51 +88,28 @@ public class BaseTaskPool {
 							httpResult = client.get();
 						// http post
 						} else {
-<<<<<<< HEAD
-							Log.i(C.debug.login, "before do post");
-=======
-							//Log.i(C.debug.login, "before do post");
->>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 							httpResult = client.post(this.taskArgs);
 						}
 					}
 					// remote task
 					if (httpResult != null) {
-<<<<<<< HEAD
-						Log.i(C.debug.login, "not null----after do post before complete");
-						baseTask.onComplete(httpResult);
-					// local task
-					} else {
-						Log.i(C.debug.login, "is null----after do post before complete");
-=======
 						//Log.i(C.debug.login, "not null----after do post before complete");
 						baseTask.onComplete(httpResult);
 					// local task
 					} else {
 						//Log.i(C.debug.login, "is null----after do post before complete");
->>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 						baseTask.onComplete();
 					}
 				} catch (Exception e) {
 					baseTask.onError(e.getMessage());
-<<<<<<< HEAD
-					Log.i(C.debug.login,"error:"+e.toString()+"message:"+e.getMessage().toString());
-					Log.i(C.debug.login,"error get e 你好");
-					Log.i(C.debug.login, "login baseTaskPool error1");
-=======
 					//Log.i(C.debug.login,"error:"+e.toString()+"message:"+e.getMessage().toString());
 					//Log.i(C.debug.login,"error get e 你好");
 					//Log.i(C.debug.login, "login baseTaskPool error1");
->>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				baseTask.onError(e.getMessage());
-<<<<<<< HEAD
-				Log.i(C.debug.login, "login baseTaskPool error2");
-=======
 				//Log.i(C.debug.login, "login baseTaskPool error2");
->>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 			} finally {
 				try {
 					baseTask.onStop();

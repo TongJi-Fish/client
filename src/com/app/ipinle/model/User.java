@@ -1,14 +1,6 @@
 package com.app.ipinle.model;
 
-<<<<<<< HEAD
-public class User {
 
-	private String id;
-	private String sid;
-	private String name;
-	private String password;
-	private String sign;
-=======
 import com.app.ipinle.base.*;
 
 public class User extends BaseModel{
@@ -25,7 +17,6 @@ public class User extends BaseModel{
 	private String name;
 	private String id_num;
 	private String driver_id;
->>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 	
 	// default is no login
 	private boolean isLogin = false;
@@ -64,30 +55,13 @@ public class User extends BaseModel{
 	public String getName(){
 		return this.name;
 	}
-	
-<<<<<<< HEAD
-	public void setPassword(String pass){
-		this.password = pass;
-	}
-	
-	public String getPassword(){
-		return this.password;
-	}
-	
-	public void setIsLogin(boolean islogin){
-		this.isLogin = isLogin;
-=======
 	public void setIsLogin(boolean login){
 		this.isLogin = login;
->>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 	}
 	
 	public boolean getIsLogin(){
 		return this.isLogin;	
 	}
-<<<<<<< HEAD
-=======
-
 	public String getId_num() {
 		return id_num;
 	}
@@ -103,6 +77,5 @@ public class User extends BaseModel{
 	public void setDriver_id(String driver_id) {
 		this.driver_id = driver_id;
 	}
->>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 	
 }

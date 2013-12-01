@@ -1,31 +1,21 @@
 package com.app.ipinle.base;
 
-<<<<<<< HEAD
-import java.util.ArrayList;
-import java.util.Iterator;
-=======
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
->>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-<<<<<<< HEAD
-=======
 import com.app.ipinle.util.*;
 
->>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 public class BaseMessage {
 	
 	private String code;
 	private String message;
 	private String resultSrc;
-<<<<<<< HEAD
-=======
 	private Map<String, BaseModel> resultMap;
 	private Map<String, ArrayList<? extends BaseModel>> resultList;
 	
@@ -33,7 +23,6 @@ public class BaseMessage {
 		this.resultMap = new HashMap<String, BaseModel>();
 		this.resultList = new HashMap<String, ArrayList<? extends BaseModel>>();
 	}
->>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 	
 	@Override
 	public String toString () {
@@ -60,41 +49,6 @@ public class BaseMessage {
 		return this.resultSrc;
 	}
 	
-<<<<<<< HEAD
-	@SuppressWarnings("unchecked")
-	public void setResult (String result) throws Exception {
-		this.resultSrc = result;
-//		if (result.length() > 0) {
-//			JSONObject jsonObject = null;
-//			jsonObject = new JSONObject(result);
-//			Iterator<String> it = jsonObject.keys();
-//			while (it.hasNext()) {
-//				// initialize
-//				String jsonKey = it.next();
-//				String modelName = getModelName(jsonKey);
-//				String modelClassName = "com.app.demos.model." + modelName;
-//				JSONArray modelJsonArray = jsonObject.optJSONArray(jsonKey);
-//				// JSONObject
-//				if (modelJsonArray == null) {
-//					JSONObject modelJsonObject = jsonObject.optJSONObject(jsonKey);
-//					if (modelJsonObject == null) {
-//						throw new Exception("Message result is invalid");
-//					}
-//					this.resultMap.put(modelName, json2model(modelClassName, modelJsonObject));
-//				// JSONArray
-//				} else {
-//					ArrayList<BaseModel> modelList = new ArrayList<BaseModel>();
-//					for (int i = 0; i < modelJsonArray.length(); i++) {
-//						JSONObject modelJsonObject = modelJsonArray.optJSONObject(i);
-//						modelList.add(json2model(modelClassName, modelJsonObject));
-//					}
-//					this.resultList.put(modelName, modelList);
-//				}
-//			}
-//		}
-	}
-}
-=======
 	public Object getResult (String modelName) throws Exception {
 		Object model = this.resultMap.get(modelName);
 		// catch null exception
@@ -172,4 +126,3 @@ public class BaseMessage {
 	}
 	
 }
->>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2

@@ -12,23 +12,14 @@ import com.app.ipinle.model.User;
 public class AppUtil {
 
 	// ///////////////////////////////////////////////////////////////////////////////
-	// ҵ���߼�
-
-<<<<<<< HEAD
-	/* ��ȡ Session Id */
-=======
+	// 
 	/* 获取  Session Id */
->>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 	static public String getSessionId() {
 		User customer = User.getInstance();
 		return customer.getSid();
 	}
 
-<<<<<<< HEAD
-	/* ��ȡ Message */
-=======
 	/* 将json格式信息转化为  Message */
->>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 	static public BaseMessage getMessage(String jsonStr) throws Exception {
 		BaseMessage message = new BaseMessage();
 		JSONObject jsonObject = null;
@@ -69,8 +60,6 @@ public class AppUtil {
 		Bitmap bitmap = view.getDrawingCache(true);
 		return bitmap;
 	}
-<<<<<<< HEAD
-=======
 	
 	/* 首字母大写 */
 	static public String ucfirst (String str) {
@@ -79,5 +68,4 @@ public class AppUtil {
 		}
 		return str;
 	}
->>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 }

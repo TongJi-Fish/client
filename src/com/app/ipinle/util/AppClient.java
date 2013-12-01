@@ -73,24 +73,14 @@ public class AppClient {
 	
 	public String get () throws Exception {
 		try {
-<<<<<<< HEAD
-			HttpGet httpGet = headerFilter(new HttpGet(this.apiUrl));
-			Log.w("AppClient.get.url", this.apiUrl);
-=======
 			HttpGet httpGet = new HttpGet(this.apiUrl);
 			//Log.w("AppClient.get.url", this.apiUrl);
->>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 			// send get request
 			HttpResponse httpResponse = httpClient.execute(httpGet);
 			if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 				//String httpResult = resultFilter(httpResponse.getEntity());
-<<<<<<< HEAD
-				String httpResult = resultFilter(httpResponse.getEntity());
-				Log.w("AppClient.get.result", httpResult);
-=======
 				String httpResult = EntityUtils.toString(httpResponse.getEntity());
 				//Log.w("AppClient.get.result", httpResult);
->>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 				return httpResult;
 			} else {
 				return null;
@@ -105,11 +95,7 @@ public class AppClient {
 	
 	public String post (HashMap urlParams) throws Exception {
 		try {
-<<<<<<< HEAD
-			HttpPost httpPost = headerFilter(new HttpPost(this.apiUrl));
-=======
 			HttpPost httpPost = new HttpPost(this.apiUrl);
->>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 			List<NameValuePair> postParams = new ArrayList<NameValuePair>();
 			// get post parameters
 			Iterator it = urlParams.entrySet().iterator();
@@ -123,20 +109,10 @@ public class AppClient {
 			} else {
 				httpPost.setEntity(new UrlEncodedFormEntity(postParams));
 			}
-<<<<<<< HEAD
-			Log.w("AppClient.post.url", this.apiUrl);
-			Log.w("AppClient.post.data", postParams.toString());
-			// send post request
-			HttpResponse httpResponse = httpClient.execute(httpPost);
-			if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-				String httpResult = resultFilter(httpResponse.getEntity());
-				Log.w("AppClient.post.result", httpResult);
-=======
 			
 			HttpResponse httpResponse = httpClient.execute(httpPost);
 			if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 				String httpResult = EntityUtils.toString(httpResponse.getEntity());
->>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 				return httpResult;
 			} else {
 				return null;
@@ -150,47 +126,4 @@ public class AppClient {
 		}
 		return null;
 	}
-<<<<<<< HEAD
-	
-	// ���ú���
-	private HttpGet headerFilter (HttpGet httpGet) {
-		switch (this.compress) {
-			case CS_GZIP:
-				httpGet.addHeader("Accept-Encoding", "gzip");
-				break;
-			default :
-				break;
-		}
-		return httpGet;
-	}
-	
-	private HttpPost headerFilter (HttpPost httpPost) {
-		switch (this.compress) {
-			case CS_GZIP:
-				httpPost.addHeader("Accept-Encoding", "gzip");
-				break;
-			default :
-				break;
-		}
-		return httpPost;
-	}
-	
-	private String resultFilter(HttpEntity entity){
-		String result = null;
-		try {
-//			switch (this.compress) {
-//				case CS_GZIP:
-//					result = AppUtil.gzipToString(entity);
-//					break;
-//				default :
-					result = EntityUtils.toString(entity);
-//					break;
-//			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-=======
->>>>>>> ea8e1d28021be3ee08bb239a2c4bb3fc553be0c2
 }
