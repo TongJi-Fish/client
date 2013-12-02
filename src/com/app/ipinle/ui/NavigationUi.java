@@ -454,31 +454,6 @@ public class NavigationUi extends BaseUi {
 		}
 	}
 
-//	// 常用事件监听，用来处理通常的网络错误，授权验证错误等
-//	class MyGeneralListener implements MKGeneralListener {
-//
-//		@Override
-//		public void onGetNetworkState(int iError) {
-//			if (iError == MKEvent.ERROR_NETWORK_CONNECT) {
-//				Toast.makeText(getApplicationContext(), "网络出错啦！",
-//						Toast.LENGTH_LONG).show();
-//			} else if (iError == MKEvent.ERROR_NETWORK_DATA) {
-//				Toast.makeText(getApplicationContext(), "输入正确的检索条件！",
-//						Toast.LENGTH_LONG).show();
-//			}
-//			// ...
-//		}
-//
-//		@Override
-//		public void onGetPermissionState(int iError) {
-//			if (iError == MKEvent.ERROR_PERMISSION_DENIED) {
-//				// 授权Key错误：
-//				Toast.makeText(getApplicationContext(),
-//						"请在 DemoApplication.java文件输入正确的授权Key！",
-//						Toast.LENGTH_LONG).show();
-//			}
-//		}
-//	}
 
 	/**
 	 * 发起路线规划搜索示例

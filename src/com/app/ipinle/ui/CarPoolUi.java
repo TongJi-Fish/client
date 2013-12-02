@@ -2,17 +2,15 @@ package com.app.ipinle.ui;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
-import android.app.DatePickerDialog;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
-
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.View;
 import android.os.Handler;
 import android.os.Message;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -27,36 +25,47 @@ import android.widget.Toast;
 
 import com.app.ipinle.base.BaseMessage;
 import com.app.ipinle.base.BaseUi;
+import com.app.ipinle.base.C;
 import com.app.ipinle.util.AppMap;
 import com.baidu.mapapi.BMapManager;
+import com.baidu.mapapi.cloud.CloudListener;
+import com.baidu.mapapi.cloud.CloudManager;
+import com.baidu.mapapi.cloud.CloudPoiInfo;
+import com.baidu.mapapi.cloud.CloudSearchResult;
+import com.baidu.mapapi.cloud.DetailSearchResult;
+import com.baidu.mapapi.cloud.LocalSearchInfo;
+import com.baidu.mapapi.cloud.NearbySearchInfo;
+import com.baidu.mapapi.map.ItemizedOverlay;
+import com.baidu.mapapi.map.MKMapTouchListener;
 import com.baidu.mapapi.map.MapController;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.OverlayItem;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.sse.eping.R;
 
-import com.app.ipinle.base.C;
-import com.app.ipinle.model.User;
-import com.app.ipinle.util.AppUser;
-import com.sse.eping.R;
-
-public class CarPoolUi extends BaseUi {
+public class CarPoolUi extends BaseUi implements CloudListener {
 
 	private BMapManager mBMapManager = null;
 	private MapView mMapView = null;
 	private MapController mMapController = null;
 
+	// 页面变量
+	private View view1 = null;
+	private View view2 = null;
+	private View view3 = null;
+
 	private Button bn1;
 	private Button bn2;
 	private Button ok;
-	private Button back;
-	private Button submit;
 	private Button back_to_1;
+	private Button submit;
+	private Button back_to_2;
 	private EditText startPoint;
 	private EditText terminalPoint;
 	public iMessage message = new iMessage();
 	private LayoutInflater inflater;
 	private GridView gv_sample;
-	private int count;
+	private int page_now;
 	private int[] pageName;
 
 	private int mHour;
@@ -75,26 +84,33 @@ public class CarPoolUi extends BaseUi {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.ui_choose_type);
 		super.onCreate(savedInstanceState);
-		pageName = new int[3];
-		pageName[0] = R.layout.ui_choose_type;
-		pageName[1] = R.layout.ui_choose_route;
-		pageName[2] = R.layout.ui_makesure;
-
-		count = 0;
-		bn1 = (Button) findViewById(R.id.drive_car);
-		bn1.setOnClickListener(onClickListener);
-		bn2 = (Button) findViewById(R.id.carpool);
-		bn2.setOnClickListener(onClickListener);
-
+		// 初始化BMapManager
 		this.mBMapManager = AppMap.getInstance(this);
+		// setContentView(R.layout.ui_choose_type);
 
-		setContentView(R.layout.show_map);
-		CharSequence titleLable = "路线规划";
-		setTitle(titleLable);
+		LayoutInflater inflater = getLayoutInflater();
+		// 功能选择页面
+		view1 = inflater.inflate(R.layout.ui_choose_type, null);
+		// 路线选择页面（起始点，时间）
+		view2 = inflater.inflate(R.layout.ui_choose_route, null);
+		// 确认页面
+		view3 = inflater.inflate(R.layout.ui_makesure, null);
+		// 记录当前页面号，默认为1
+		page_now = 1;
+		setContentView(view1);
+
+		initMap();
+		initOtherComponent();
+
+	}
+
+	public void initMap() {
+		// setContentView(R.layout.show_map);
+		// CharSequence titleLable = "路线规划";
+		// setTitle(titleLable);
 		// 初始化地图
-		mMapView = (MapView) findViewById(R.id.bmapsView);
+		mMapView = (MapView) view2.findViewById(R.id.bmapView_carpool);
 		mMapView.setBuiltInZoomControls(false);
 		GeoPoint point = new GeoPoint((int) (31.22 * 1E6), (int) (121.48 * 1E6));
 		mMapView.getController().setCenter(point);
@@ -104,6 +120,138 @@ public class CarPoolUi extends BaseUi {
 		mMapController = mMapView.getController();
 		mMapController.enableClick(true);
 
+		// 初始化
+		CloudManager.getInstance().init(CarPoolUi.this);
+
+		// 地图点击事件处理
+		MKMapTouchListener mapTouchListener = new MKMapTouchListener(){  
+	        @Override  
+	        public void onMapClick(GeoPoint point) {  
+	            //在此处理地图单击事件  
+	        	Log.i("test", "click1"+point.toString());
+	        }  
+	  
+	        @Override  
+	        public void onMapDoubleClick(GeoPoint point) {  
+	            //在此处理地图双击事件  
+	        	Log.i("test", "click2");
+	        }  
+	  
+	        @Override  
+	        public void onMapLongClick(GeoPoint point) {  
+	            //在此处理地图长按事件
+	        	Log.i("test", "click3+"+point.getLatitudeE6()/1E6+","+point.getLongitudeE6()/1E6);
+	        	Toast.makeText(CarPoolUi.this, "point:"+point.toString(), Toast.LENGTH_SHORT).show();
+//	        	new AlertDialog.Builder(CarPoolUi.this)   
+//	        	.setTitle("查找周围站点")  
+//	        	.setMessage("是否查找周围站点吗？")  
+//	        	.setPositiveButton("是", null)  
+//	        	.setNegativeButton("否", null)  
+//	        	.show();
+
+	    	    doSearchStationCloud(point);
+	        }  
+	    };  
+	    mMapView.regMapTouchListner(mapTouchListener);
+	}
+	
+	
+	public void doSearchStationCloud(GeoPoint point){
+//						LocalSearchInfo info = new LocalSearchInfo();
+//		info.ak = "isEmj74g2npsD7Cycyh1OZyM";
+//		info.geoTableId = 41985;
+//		info.tags = "ESSC-CAR站点";
+//		info.region = "上海";// 城市
+//		CloudManager.getInstance().localSearch(info);
+		Toast.makeText(this, "开始云检索", Toast.LENGTH_SHORT).show();
+		Log.i("test", "开始云检索");
+		
+
+		// 周边检索
+		NearbySearchInfo info = new NearbySearchInfo();
+		info.ak = "isEmj74g2npsD7Cycyh1OZyM";
+		info.geoTableId = 41985;
+		info.tags = "ESSC-CAR站点";
+		info.location = point.getLongitudeE6()/1E6+","+point.getLatitudeE6()/1E6;//"121.168929,31.294379";
+		info.radius = 500;
+		CloudManager.getInstance().nearbySearch(info);
+	}
+
+	public void initOtherComponent() {
+		// 初始化其它组件
+		bn1 = (Button) view1.findViewById(R.id.drive_car);// 第一屏中的选择开车按钮
+		bn1.setOnClickListener(onClickListener);
+		bn2 = (Button) view1.findViewById(R.id.carpool);// 第一屏的选择搭车按钮
+		bn2.setOnClickListener(onClickListener);
+
+		// 第二屏
+		ok = (Button) view2.findViewById(R.id.make_sure);
+		ok.setOnClickListener(onClickListener);
+		back_to_1 = (Button) view2.findViewById(R.id.back_to_1);
+		back_to_1.setOnClickListener(onClickListener);
+		startPoint = (EditText) view2.findViewById(R.id.start_point);
+		terminalPoint = (EditText) view2.findViewById(R.id.terminal_point);
+		showTime = (EditText) view2.findViewById(R.id.showtime);
+
+		initializeViews();
+
+		final Calendar c = Calendar.getInstance();
+		mHour = c.get(Calendar.HOUR_OF_DAY);
+		mMinute = c.get(Calendar.MINUTE);
+		setTimeOfDay();
+
+		// 第三屏
+		text1 = (TextView) view3.findViewById(R.id.makesure_type);
+		text2 = (TextView) view3.findViewById(R.id.makesure_time);
+		text3 = (TextView) view3.findViewById(R.id.makesure_start);
+		text4 = (TextView) view3.findViewById(R.id.makesure_terminal);
+		submit = (Button) view3.findViewById(R.id.submit);
+		back_to_2 = (Button) view3.findViewById(R.id.back_to_2);
+		submit.setOnClickListener(onClickListener);
+		back_to_2.setOnClickListener(onClickListener);
+
+	}
+
+	@Override
+	protected void onPause() {
+		/**
+		 * MapView的生命周期与Activity同步，当activity挂起时需调用MapView.onPause()
+		 */
+		mMapView.setVisibility(View.INVISIBLE);
+		mMapView.onPause();
+		super.onPause();
+	}
+
+	@Override
+	protected void onResume() {
+		/**
+		 * MapView的生命周期与Activity同步，当activity恢复时需调用MapView.onResume()
+		 */
+		mMapView.setVisibility(View.VISIBLE);
+		mMapView.onResume();
+		super.onResume();
+	}
+
+	@Override
+	protected void onDestroy() {
+		/**
+		 * MapView的生命周期与Activity同步，当activity销毁时需调用MapView.destroy()
+		 */
+		mMapView.destroy();
+		super.onDestroy();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		mMapView.onSaveInstanceState(outState);
+
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		mMapView.onRestoreInstanceState(savedInstanceState);
 	}
 
 	OnClickListener onClickListener = new OnClickListener() {
@@ -111,29 +259,28 @@ public class CarPoolUi extends BaseUi {
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case (R.id.drive_car): {
+				// 第一屏中的“我要开车”按钮
 				message.setDrive(true);
-				++count;
+				// ++count;
+				ForwardPage();// 前进一页
 
-				initScreen2();
+				// initScreen2();
 				break;
 			}
 			case (R.id.carpool): {
 				message.setDrive(false);
-				++count;
-				initScreen2();
-
+				// ++count;
+				// initScreen2();
+				ForwardPage();// 前进一页
 				break;
 			}
-
 			case (R.id.make_sure): {
-
 				if (startPoint.getText().length() <= 0
 						|| terminalPoint.getText().length() <= 0) {
 					Toast.makeText(CarPoolUi.this, "请输入起点及终点",
 							Toast.LENGTH_SHORT).show();
 					break;
 				}
-
 				final Calendar c = Calendar.getInstance();
 				mHour = c.get(Calendar.HOUR_OF_DAY);
 				mMinute = c.get(Calendar.MINUTE);
@@ -151,29 +298,34 @@ public class CarPoolUi extends BaseUi {
 						break;
 					}
 				}
-
 				message.setTime(showTime.getText().toString());
 
 				message.setStart_point(startPoint.getText().toString());
 				message.setTerminal_point(terminalPoint.getText().toString());
-				++count;
-				setContentView(pageName[count]);
-
-				initScreen3();
-				break;
-			}
-			case (R.id.back_to_0): {
-				--count;
-				setContentView(pageName[count]);
-				bn1 = (Button) findViewById(R.id.drive_car);
-				bn1.setOnClickListener(onClickListener);
-				bn2 = (Button) findViewById(R.id.carpool);
-				bn2.setOnClickListener(onClickListener);
+				// ++count;
+				// setContentView(pageName[count]);
+				// initScreen3();
+				if (message.isDrive) {
+					text1.setText("租车");
+				} else {
+					text1.setText("拼车");
+				}
+				text2.setText(message.getTime());
+				text3.setText(message.getStart_point());
+				text4.setText(message.getTerminal_point());
+				ForwardPage();// 前进一页
 				break;
 			}
 			case (R.id.back_to_1): {
-				--count;
-				initScreen2();
+				// --count;
+				// setContentView(pageName[count]);
+				BackwardPage();// 回退一页
+				break;
+			}
+			case (R.id.back_to_2): {
+				// --count;
+				// initScreen2();
+				BackwardPage();// 回退一页
 				break;
 			}
 			case (R.id.submit): {
@@ -187,43 +339,68 @@ public class CarPoolUi extends BaseUi {
 		}
 	};
 
-	public void initScreen2() {
-
-		setContentView(pageName[count]);
-		ok = (Button) findViewById(R.id.make_sure);
-		ok.setOnClickListener(onClickListener);
-		back = (Button) findViewById(R.id.back_to_0);
-		back.setOnClickListener(onClickListener);
-		startPoint = (EditText) findViewById(R.id.start_point);
-		terminalPoint = (EditText) findViewById(R.id.terminal_point);
-		showTime = (EditText) findViewById(R.id.showtime);
-
-		initializeViews();
-
-		final Calendar c = Calendar.getInstance();
-		mHour = c.get(Calendar.HOUR_OF_DAY);
-		mMinute = c.get(Calendar.MINUTE);
-		setTimeOfDay();
+	/*
+	 * function: forward one page
+	 * 
+	 * parameter: none
+	 * 
+	 * author: Jack Yu
+	 */
+	public void ForwardPage() {
+		switch (page_now) {
+		case 1:
+			// from one to two
+			page_now++;// 当前页面指针加1
+			mMapView.setVisibility(View.VISIBLE);
+			mMapView.onResume();
+			setContentView(view2);
+			break;
+		case 2:
+			// from two to three
+			page_now++;// 当前页面指针加1
+			//mMapView.invalidate();
+			//mMapView.refresh();
+			mMapView.setVisibility(View.INVISIBLE);
+			mMapView.onPause();
+			setContentView(view3);
+			break;
+		case 3:
+			// something wrong here!
+			Toast.makeText(CarPoolUi.this, "已经是最后一页了", Toast.LENGTH_SHORT)
+					.show();
+			break;
+		}
 	}
 
-	public void initScreen3() {
-		setContentView(pageName[count]);
-		text1 = (TextView) findViewById(R.id.makesure_type);
-		if (message.isDrive) {
-			text1.setText("租车");
-		} else {
-			text1.setText("拼车");
+	/*
+	 * function: backward one page
+	 * 
+	 * parameter: none
+	 * 
+	 * author: Jack Yu
+	 */
+	public void BackwardPage() {
+		switch (page_now) {
+		case 1:
+			// something wrong here
+			Toast.makeText(CarPoolUi.this, "已经是第一页了", Toast.LENGTH_SHORT)
+					.show();
+			break;
+		case 2:
+			// from two to one
+			page_now--;
+			mMapView.setVisibility(View.INVISIBLE);
+			mMapView.onPause();
+			setContentView(view1);
+			break;
+		case 3:
+			// from three to two
+			page_now--;
+			mMapView.setVisibility(View.VISIBLE);
+			mMapView.onResume();
+			setContentView(view2);
+			break;
 		}
-		text2 = (TextView) findViewById(R.id.makesure_time);
-		text2.setText(message.getTime());
-		text3 = (TextView) findViewById(R.id.makesure_start);
-		text3.setText(message.getStart_point());
-		text4 = (TextView) findViewById(R.id.makesure_terminal);
-		text4.setText(message.getTerminal_point());
-		submit = (Button) findViewById(R.id.submit);
-		back_to_1 = (Button) findViewById(R.id.back_to_1);
-		submit.setOnClickListener(onClickListener);
-		back_to_1.setOnClickListener(onClickListener);
 	}
 
 	class iMessage {
@@ -276,8 +453,8 @@ public class CarPoolUi extends BaseUi {
 
 	private void initializeViews() {
 
-		showTime = (EditText) findViewById(R.id.showtime);
-		pickTime = (Button) findViewById(R.id.picktime);
+		showTime = (EditText) view2.findViewById(R.id.showtime);
+		pickTime = (Button) view2.findViewById(R.id.picktime);
 		pickTime.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -355,10 +532,9 @@ public class CarPoolUi extends BaseUi {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK
 				&& event.getAction() == KeyEvent.ACTION_DOWN) {
-
-			switch (count) {
-
-			case (0): {
+			if (page_now >= 2)
+				BackwardPage();// 回退一页
+			else {
 				if ((System.currentTimeMillis() - exitTime) > 2000) {
 					Toast.makeText(getApplicationContext(), "再按一次退出程序",
 							Toast.LENGTH_SHORT).show();
@@ -367,25 +543,7 @@ public class CarPoolUi extends BaseUi {
 					finish();
 					System.exit(0);
 				}
-				break;
 			}
-			case (1): {
-				--count;
-				setContentView(pageName[count]);
-				bn1 = (Button) findViewById(R.id.drive_car);
-				bn1.setOnClickListener(onClickListener);
-				bn2 = (Button) findViewById(R.id.carpool);
-				bn2.setOnClickListener(onClickListener);
-				break;
-			}
-			case (2): {
-				--count;
-				initScreen2();
-				break;
-			}
-			}
-
-			return true;
 		}
 		return super.onKeyDown(keyCode, event);
 	}
@@ -413,46 +571,95 @@ public class CarPoolUi extends BaseUi {
 		// ///////////////////////////////////////////////////////////////////////////
 		this.hideLoadBar();
 	}
+	
+	/**
+	 * function: 	search stations in cloud
+	 * 
+	 * parameters:
+	 * 
+	 * author:		Jack Yu
+	 * 
+	 */
+	public void searchCloudStation(){
+		
+	}
 
+	// 重写云检索相关方法
 	@Override
-	protected void onPause() {
-		/**
-		 * MapView的生命周期与Activity同步，当activity挂起时需调用MapView.onPause()
-		 */
-		mMapView.setVisibility(View.INVISIBLE);
-		mMapView.onPause();
-		super.onPause();
+	public void onGetDetailSearchResult(DetailSearchResult arg0, int arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	protected void onResume() {
-		/**
-		 * MapView的生命周期与Activity同步，当activity恢复时需调用MapView.onResume()
-		 */
-		mMapView.setVisibility(View.VISIBLE);
-		mMapView.onResume();
-		super.onResume();
+	public void onGetSearchResult(CloudSearchResult result, int error) {
+		// TODO Auto-generated method stub
+		Toast.makeText(this, "收到云检索结果", Toast.LENGTH_SHORT).show();
+		Log.i("test", "收到云检索结果");
+	    if (result != null && result.poiList!= null && result.poiList.size() > 0) {  
+	        CloudOverlay poiOverlay = new CloudOverlay(CarPoolUi.this,mMapView);  
+	        poiOverlay.setData(result.poiList);  
+	        mMapView.getOverlays().clear();  
+	        mMapView.getOverlays().add(poiOverlay);  
+	        mMapView.refresh();  
+	        mMapView.getController().animateTo(  
+	            new GeoPoint((int)(result.poiList.get(0).latitude * 1e6),  
+	            (int)(result.poiList.get(0).longitude * 1e6))  
+	        );  
+	    } 
 	}
+	
+	// 定义装载云检索数据的类，因为是不可见的，所以放在内部
+	class CloudOverlay extends ItemizedOverlay {
 
-	@Override
-	protected void onDestroy() {
-		/**
-		 * MapView的生命周期与Activity同步，当activity销毁时需调用MapView.destroy()
-		 */
-		mMapView.destroy();
-		super.onDestroy();
-	}
+		List<CloudPoiInfo> mLbsPoints;
+		Activity mContext;
+		CarPoolUi carpoolui;
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		mMapView.onSaveInstanceState(outState);
+		public CloudOverlay(CarPoolUi carpoolui, MapView mMapView) {
+			super(null, mMapView);
+			mContext = carpoolui;
+			// this.showmap = showmap;
+		}
 
-	}
+		public void setData(List<CloudPoiInfo> lbsPoints) {
+			if (lbsPoints != null) {
+				mLbsPoints = lbsPoints;
+			}
+			for (CloudPoiInfo rec : mLbsPoints) {
+				GeoPoint pt = new GeoPoint((int) (rec.latitude * 1e6),
+						(int) (rec.longitude * 1e6));
+				OverlayItem item = new OverlayItem(pt, rec.title,
+						rec.extras.toString());
+				//Toast.makeText(this.mContext, rec.extras.get("station_name").toString(), Toast.LENGTH_LONG).show();
+				//Log.i("station_name", rec.extras.get("station_name").toString());
+				if (rec.extras.get("station_name").toString().endsWith("222")) {
+					Drawable marker1 = this.mContext.getResources().getDrawable(
+							R.drawable.next_);
+					item.setMarker(marker1);
+				} else {
+					Drawable marker1 = this.mContext.getResources().getDrawable(
+							R.drawable.ic_launcher);
+					item.setMarker(marker1);
+				}
+				addItem(item);
+			}
+		}
 
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		mMapView.onRestoreInstanceState(savedInstanceState);
+		@Override
+		protected Object clone() throws CloneNotSupportedException {
+			// TODO Auto-generated method stub
+			return super.clone();
+		}
+
+		@Override
+		protected boolean onTap(int arg0) {
+			CloudPoiInfo item = mLbsPoints.get(arg0);
+			 Toast.makeText(mContext, "选择了"+item.title,Toast.LENGTH_LONG).show();
+			//this.carpoolui = (ShowMap) this.mContext;
+			//this.carpoolui.showWhenTap(item.extras.toString());
+			return super.onTap(arg0);
+		}
+
 	}
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- <merge xmlns:android="http://schemas.android.com/apk/res/android"> -->
 <!-- <include layout="@layout/main_layout" /> -->
-<LinearLayout 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
 	android:orientation="vertical" 
 	android:layout_width="fill_parent" 
 	android:layout_height="fill_parent"
@@ -89,7 +89,7 @@
                 android:background="@drawable/button_style"
                 android:text="提交" />
             <Button
-                android:id="@+id/back_to_1"
+                android:id="@+id/back_to_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dip"
@@ -100,4 +100,4 @@
         </LinearLayout>
 
 </LinearLayout>
-</merge>
+<!-- </merge> -->

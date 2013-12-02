@@ -12,5 +12,11 @@
 	    android:text="show bus route"/>
 	<!-- <include layout="@layout/ui_template_maintab" 
 	    android:gravity="bottom"/> -->
+	    
+	    <Button
+	        android:id="@+id/testbtn"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="hello"></Button>
 </LinearLayout>
 </merge>

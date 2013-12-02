@@ -22,7 +22,7 @@ public class InitScreenUi extends Activity {
 		
 		setContentView(R.layout.ui_init_screen);
 		
-		final Intent intent = new Intent(this,LoginUi.class);
+		final Intent intent = new Intent(this,TemplateUi.class);//LoginUi.class);
 		
 		Timer timer = new Timer();
 		TimerTask task = new TimerTask(){
