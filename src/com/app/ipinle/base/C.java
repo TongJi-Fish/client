@@ -18,6 +18,7 @@ public class C {
 		public static final String base				= "http://"+hostname;
 //		public static final String index			= "/index/index";
 		public static final String login			= "/index.php/usercontrol/login";
+		public static final String submit			= "/index.php/rentApplyControl/rentApply";
 //		public static final String logout			= "/index/logout";
 //		public static final String faceView 		= "/image/faceView";
 //		public static final String faceList 		= "/image/faceList";
@@ -36,6 +37,7 @@ public class C {
 	public static final class task {
 //		public static final int index				= 1001;
 		public static final int login				= 1002;
+		public static final int submit				= 1003;
 //		public static final int logout				= 1003;
 //		public static final int faceView			= 1004;
 //		public static final int faceList			= 1005;

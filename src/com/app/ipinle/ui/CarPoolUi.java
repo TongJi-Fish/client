@@ -5,8 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,6 +28,7 @@ import android.widget.Toast;
 import com.app.ipinle.base.BaseMessage;
 import com.app.ipinle.base.BaseUi;
 import com.app.ipinle.base.C;
+import com.app.ipinle.model.SubmitFeedback;
 import com.app.ipinle.util.AppMap;
 import com.baidu.mapapi.BMapManager;
 import com.baidu.mapapi.cloud.CloudListener;
@@ -33,7 +36,6 @@ import com.baidu.mapapi.cloud.CloudManager;
 import com.baidu.mapapi.cloud.CloudPoiInfo;
 import com.baidu.mapapi.cloud.CloudSearchResult;
 import com.baidu.mapapi.cloud.DetailSearchResult;
-import com.baidu.mapapi.cloud.LocalSearchInfo;
 import com.baidu.mapapi.cloud.NearbySearchInfo;
 import com.baidu.mapapi.map.ItemizedOverlay;
 import com.baidu.mapapi.map.MKMapTouchListener;
@@ -81,6 +83,7 @@ public class CarPoolUi extends BaseUi implements CloudListener {
 	private TextView text4;
 
 	private long exitTime = 0;
+	private boolean allow_back = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -124,56 +127,57 @@ public class CarPoolUi extends BaseUi implements CloudListener {
 		CloudManager.getInstance().init(CarPoolUi.this);
 
 		// 地图点击事件处理
-		MKMapTouchListener mapTouchListener = new MKMapTouchListener(){  
-	        @Override  
-	        public void onMapClick(GeoPoint point) {  
-	            //在此处理地图单击事件  
-	        	Log.i("test", "click1"+point.toString());
-	        }  
-	  
-	        @Override  
-	        public void onMapDoubleClick(GeoPoint point) {  
-	            //在此处理地图双击事件  
-	        	Log.i("test", "click2");
-	        }  
-	  
-	        @Override  
-	        public void onMapLongClick(GeoPoint point) {  
-	            //在此处理地图长按事件
-	        	Log.i("test", "click3+"+point.getLatitudeE6()/1E6+","+point.getLongitudeE6()/1E6);
-	        	Toast.makeText(CarPoolUi.this, "point:"+point.toString(), Toast.LENGTH_SHORT).show();
-//	        	new AlertDialog.Builder(CarPoolUi.this)   
-//	        	.setTitle("查找周围站点")  
-//	        	.setMessage("是否查找周围站点吗？")  
-//	        	.setPositiveButton("是", null)  
-//	        	.setNegativeButton("否", null)  
-//	        	.show();
+		MKMapTouchListener mapTouchListener = new MKMapTouchListener() {
+			@Override
+			public void onMapClick(GeoPoint point) {
+				// 在此处理地图单击事件
+				Log.i("test", "click1" + point.toString());
+			}
 
-	    	    doSearchStationCloud(point);
-	        }  
-	    };  
-	    mMapView.regMapTouchListner(mapTouchListener);
+			@Override
+			public void onMapDoubleClick(GeoPoint point) {
+				// 在此处理地图双击事件
+				Log.i("test", "click2");
+			}
+
+			@Override
+			public void onMapLongClick(GeoPoint point) {
+				// 在此处理地图长按事件
+				Log.i("test", "click3+" + point.getLatitudeE6() / 1E6 + ","
+						+ point.getLongitudeE6() / 1E6);
+				Toast.makeText(CarPoolUi.this, "point:" + point.toString(),
+						Toast.LENGTH_SHORT).show();
+				// new AlertDialog.Builder(CarPoolUi.this)
+				// .setTitle("查找周围站点")
+				// .setMessage("是否查找周围站点吗？")
+				// .setPositiveButton("是", null)
+				// .setNegativeButton("否", null)
+				// .show();
+
+				doSearchStationCloud(point);
+			}
+		};
+		mMapView.regMapTouchListner(mapTouchListener);
 	}
-	
-	
-	public void doSearchStationCloud(GeoPoint point){
-//						LocalSearchInfo info = new LocalSearchInfo();
-//		info.ak = "isEmj74g2npsD7Cycyh1OZyM";
-//		info.geoTableId = 41985;
-//		info.tags = "ESSC-CAR站点";
-//		info.region = "上海";// 城市
-//		CloudManager.getInstance().localSearch(info);
-		Toast.makeText(this, "开始云检索", Toast.LENGTH_SHORT).show();
-		Log.i("test", "开始云检索");
-		
+
+	public void doSearchStationCloud(GeoPoint point) {
+		// LocalSearchInfo info = new LocalSearchInfo();
+		// info.ak = "isEmj74g2npsD7Cycyh1OZyM";
+		// info.geoTableId = 41985;
+		// info.tags = "ESSC-CAR站点";
+		// info.region = "上海";// 城市
+		// // CloudManager.getInstance().localSearch(info);
+		// Toast.makeText(this, "开始云检索", Toast.LENGTH_SHORT).show();
+		// Log.i("test", "开始云检索");
 
 		// 周边检索
 		NearbySearchInfo info = new NearbySearchInfo();
 		info.ak = "isEmj74g2npsD7Cycyh1OZyM";
 		info.geoTableId = 41985;
 		info.tags = "ESSC-CAR站点";
-		info.location = point.getLongitudeE6()/1E6+","+point.getLatitudeE6()/1E6;//"121.168929,31.294379";
-		info.radius = 500;
+		info.location = point.getLongitudeE6() / 1E6 + ","
+				+ point.getLatitudeE6() / 1E6;// "121.168929,31.294379";
+		info.radius = 3000;
 		CloudManager.getInstance().nearbySearch(info);
 	}
 
@@ -192,6 +196,8 @@ public class CarPoolUi extends BaseUi implements CloudListener {
 		startPoint = (EditText) view2.findViewById(R.id.start_point);
 		terminalPoint = (EditText) view2.findViewById(R.id.terminal_point);
 		showTime = (EditText) view2.findViewById(R.id.showtime);
+		//startPoint.setEnabled(false);
+		//terminalPoint.setEnabled(false);
 
 		initializeViews();
 
@@ -330,6 +336,7 @@ public class CarPoolUi extends BaseUi implements CloudListener {
 			}
 			case (R.id.submit): {
 				// 提交所有信息！！
+				doTaskSubmit();
 			}
 
 			}
@@ -358,8 +365,8 @@ public class CarPoolUi extends BaseUi implements CloudListener {
 		case 2:
 			// from two to three
 			page_now++;// 当前页面指针加1
-			//mMapView.invalidate();
-			//mMapView.refresh();
+			// mMapView.invalidate();
+			// mMapView.refresh();
 			mMapView.setVisibility(View.INVISIBLE);
 			mMapView.onPause();
 			setContentView(view3);
@@ -401,6 +408,30 @@ public class CarPoolUi extends BaseUi implements CloudListener {
 			setContentView(view2);
 			break;
 		}
+	}
+
+	/**
+	 * function: set start station
+	 * 
+	 * parameters: s_station: the name of start station
+	 * 
+	 * @author fish
+	 * 
+	 */
+	public void setStartStation(String s_station) {
+		this.startPoint.setText(s_station);
+	}
+
+	/**
+	 * function: set end station
+	 * 
+	 * parameters: t_sataion: the name of terminal station
+	 * 
+	 * @author fish
+	 * 
+	 */
+	public void setEndStation(String t_station) {
+		this.terminalPoint.setText(t_station);
 	}
 
 	class iMessage {
@@ -532,6 +563,10 @@ public class CarPoolUi extends BaseUi implements CloudListener {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK
 				&& event.getAction() == KeyEvent.ACTION_DOWN) {
+			
+			if(allow_back == false)
+				return super.onKeyDown(keyCode, event);
+			
 			if (page_now >= 2)
 				BackwardPage();// 回退一页
 			else {
@@ -548,73 +583,116 @@ public class CarPoolUi extends BaseUi implements CloudListener {
 		return super.onKeyDown(keyCode, event);
 	}
 
-	public void doTaskSubmit() {
-
-		HashMap<String, String> urlParams = new HashMap<String, String>();
-		urlParams.put("typw", Boolean.toString(this.message.isDrive()));
+    public void doTaskSubmit(){
+   	 
+		HashMap<String, String> urlParams = new HashMap<String,String>();
+		urlParams.put("type", Boolean.toString(this.message.isDrive()));
 		urlParams.put("time", this.message.getTime().toString());
-		urlParams.put("start_poing", this.message.getStart_point());
-		urlParams.put("terminal_poing", this.message.getTerminal_point());
-		try {
+		urlParams.put("start_point", this.message.getStart_point());
+		urlParams.put("terminal_point", this.message.getTerminal_point());
+		try{
 			this.showLoadBar();
-
-			this.doTaskAsync(C.task.login, C.api.login, urlParams);
-		} catch (Exception e) {
+			this.lockScreen();// 锁定屏幕，等待过程中不能
+			this.doTaskAsync(C.task.submit, C.api.submit, urlParams);
+		}catch(Exception e){
 			e.printStackTrace();
 		}
-
-	}
-
-	@Override
-	public void onTaskComplete(int taskId, BaseMessage message) {
-		super.onTaskComplete(taskId, message);
-		// ///////////////////////////////////////////////////////////////////////////
+		
+    }
+	
+    @Override
+	public void onTaskComplete(int taskId, BaseMessage message){
+		//super.onTaskComplete(taskId, message);
+		/////////////////////////////////////////////////////////////////////////////
+   	 SubmitFeedback feedback = null;
+		switch(taskId){
+		case C.task.submit:{
+			try{
+				feedback = (SubmitFeedback)message.getResult("SubmitFeedback");
+			}catch(Exception e){
+				e.printStackTrace();
+				this.toast(e.getMessage());
+			}finally{
+				unLockScreen();
+			}
+			
+			if(feedback.getFeedback().equals("Success")){
+				//跳转回第一屏！
+				Toast.makeText(CarPoolUi.this, "预订成功",Toast.LENGTH_SHORT).show();
+			}
+			else{
+				Toast.makeText(CarPoolUi.this, "预订失败，请稍候重试",Toast.LENGTH_SHORT).show();
+			}
+			
+		}
+		}
 		this.hideLoadBar();
 	}
-	
+    
+    public void lockScreen(){
+		if(this.submit!=null)
+			this.submit.setEnabled(false);
+		if(this.back_to_1!=null)////要改成backto2
+			this.back_to_1.setEnabled(false);
+		this.allow_back = false;
+
+	 }
+    
+    public void unLockScreen(){
+   	 if(this.submit!=null)
+ 			this.submit.setEnabled(true);
+ 		if(this.back_to_1!=null)////要改成backto2
+ 			this.back_to_1.setEnabled(true);
+ 		this.allow_back = true;
+    }
+
 	/**
-	 * function: 	search stations in cloud
+	 * function: search stations in cloud
 	 * 
 	 * parameters:
 	 * 
-	 * author:		Jack Yu
+	 * author: Jack Yu
 	 * 
 	 */
-	public void searchCloudStation(){
-		
+	public void searchCloudStation() {
+
 	}
 
 	// 重写云检索相关方法
 	@Override
 	public void onGetDetailSearchResult(DetailSearchResult arg0, int arg1) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onGetSearchResult(CloudSearchResult result, int error) {
 		// TODO Auto-generated method stub
-		Toast.makeText(this, "收到云检索结果", Toast.LENGTH_SHORT).show();
-		Log.i("test", "收到云检索结果");
-	    if (result != null && result.poiList!= null && result.poiList.size() > 0) {  
-	        CloudOverlay poiOverlay = new CloudOverlay(CarPoolUi.this,mMapView);  
-	        poiOverlay.setData(result.poiList);  
-	        mMapView.getOverlays().clear();  
-	        mMapView.getOverlays().add(poiOverlay);  
-	        mMapView.refresh();  
-	        mMapView.getController().animateTo(  
-	            new GeoPoint((int)(result.poiList.get(0).latitude * 1e6),  
-	            (int)(result.poiList.get(0).longitude * 1e6))  
-	        );  
-	    } 
+		if (result != null && result.poiList != null
+				&& result.poiList.size() > 0) {
+			// Toast.makeText(this, "收到云检索结果", Toast.LENGTH_SHORT).show();
+			// Log.i("test", "收到云检索结果");
+			CloudOverlay poiOverlay = new CloudOverlay(CarPoolUi.this, mMapView);
+			poiOverlay.setData(result.poiList);
+			mMapView.getOverlays().clear();
+			mMapView.getOverlays().add(poiOverlay);
+			mMapView.refresh();
+			mMapView.getController().animateTo(
+					new GeoPoint((int) (result.poiList.get(0).latitude * 1e6),
+							(int) (result.poiList.get(0).longitude * 1e6)));
+		} else {
+			Toast.makeText(this, "云检索结果为空", Toast.LENGTH_SHORT).show();
+			Log.i("test", "云检索结果为空");
+		}
 	}
-	
+
 	// 定义装载云检索数据的类，因为是不可见的，所以放在内部
 	class CloudOverlay extends ItemizedOverlay {
 
 		List<CloudPoiInfo> mLbsPoints;
 		Activity mContext;
-		CarPoolUi carpoolui;
+
+		// CarPoolUi carpoolui;
 
 		public CloudOverlay(CarPoolUi carpoolui, MapView mMapView) {
 			super(null, mMapView);
@@ -631,15 +709,18 @@ public class CarPoolUi extends BaseUi implements CloudListener {
 						(int) (rec.longitude * 1e6));
 				OverlayItem item = new OverlayItem(pt, rec.title,
 						rec.extras.toString());
-				//Toast.makeText(this.mContext, rec.extras.get("station_name").toString(), Toast.LENGTH_LONG).show();
-				//Log.i("station_name", rec.extras.get("station_name").toString());
+				// Toast.makeText(this.mContext,
+				// rec.extras.get("station_name").toString(),
+				// Toast.LENGTH_LONG).show();
+				// Log.i("station_name",
+				// rec.extras.get("station_name").toString());
 				if (rec.extras.get("station_name").toString().endsWith("222")) {
-					Drawable marker1 = this.mContext.getResources().getDrawable(
-							R.drawable.next_);
+					Drawable marker1 = this.mContext.getResources()
+							.getDrawable(R.drawable.next_);
 					item.setMarker(marker1);
 				} else {
-					Drawable marker1 = this.mContext.getResources().getDrawable(
-							R.drawable.ic_launcher);
+					Drawable marker1 = this.mContext.getResources()
+							.getDrawable(R.drawable.icon_gcoding);
 					item.setMarker(marker1);
 				}
 				addItem(item);
@@ -655,9 +736,48 @@ public class CarPoolUi extends BaseUi implements CloudListener {
 		@Override
 		protected boolean onTap(int arg0) {
 			CloudPoiInfo item = mLbsPoints.get(arg0);
-			 Toast.makeText(mContext, "选择了"+item.title,Toast.LENGTH_LONG).show();
-			//this.carpoolui = (ShowMap) this.mContext;
-			//this.carpoolui.showWhenTap(item.extras.toString());
+			
+			final String stationName = item.extras.get("station_name").toString();
+//			Toast.makeText(mContext, "选择了" + item.title, Toast.LENGTH_LONG)
+//					.show();
+//			Log.i("test", item.extras.get("station_name").toString());
+//			// this.carpoolui = (ShowMap) this.mContext;
+//			// this.carpoolui.showWhenTap(item.extras.toString());
+//			setStartStation(item.extras.get("station_name").toString());
+
+			// 设置提示框
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(
+					CarPoolUi.this);
+			builder.setTitle("将 " + stationName);
+
+			builder.setItems(new String[] { "设为起点", "设为终点" },
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							switch (which) {
+							case 0:
+
+								setStartStation(stationName);
+								break;
+							case 1:
+								setEndStation(stationName);
+								break;
+							default:
+								break;
+							}
+							dialog.dismiss();
+						}
+					});
+			builder.setNegativeButton("取消",
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					});
+			builder.create().show();
+
 			return super.onTap(arg0);
 		}
 

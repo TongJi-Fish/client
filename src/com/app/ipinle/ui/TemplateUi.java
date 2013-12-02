@@ -1,6 +1,5 @@
 package com.app.ipinle.ui;
 
-import android.app.ActivityGroup;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.RadioGroup;
@@ -8,9 +7,10 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost;
 import android.widget.Toast;
 
+import com.app.ipinle.base.BaseUi;
 import com.sse.eping.R;
 
-public class TemplateUi extends ActivityGroup {
+public class TemplateUi extends BaseUi {
 
 	public static final String TAB_BUS_ROUTE = "busroute";
 	public static final String TAB_CARPOOL = "carpool";

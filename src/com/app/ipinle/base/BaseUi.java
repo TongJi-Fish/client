@@ -2,7 +2,7 @@ package com.app.ipinle.base;
 
 import java.util.HashMap;
 
-import android.app.Activity;
+import android.app.ActivityGroup;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.sse.eping.R;
 
-public class BaseUi<loadBar> extends Activity {
+public class BaseUi<loadBar> extends ActivityGroup {
 	protected BaseApp app;
 	protected BaseHandler handler;
 	protected BaseTaskPool taskPool;

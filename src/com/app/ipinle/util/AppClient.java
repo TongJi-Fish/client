@@ -113,6 +113,7 @@ public class AppClient {
 			HttpResponse httpResponse = httpClient.execute(httpPost);
 			if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 				String httpResult = EntityUtils.toString(httpResponse.getEntity());
+				Log.i("debug", httpResult);
 				return httpResult;
 			} else {
 				return null;

@@ -99,5 +99,6 @@
                 android:text="回退" />
         </LinearLayout>
 
+    <include layout="@layout/ui_load_bar" ></include>
 </LinearLayout>
 <!-- </merge> -->
