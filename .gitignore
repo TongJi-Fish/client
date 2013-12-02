@@ -31,7 +31,10 @@ Desktop.ini
 
 # Java class files
 *.class
+<<<<<<< HEAD
+=======
 *.classpath
+>>>>>>> 5e1635f6628d36e354f442c68e9dd3315784cc9d
 
 # generated files
 bin/

@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="15" />
+        android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
@@ -49,7 +49,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.ipingle.MapActivity"
+            android:name="com.sse.eping.MainActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_map"
             android:screenOrientation="sensor" >

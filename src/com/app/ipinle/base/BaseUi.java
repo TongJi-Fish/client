@@ -13,7 +13,6 @@ import android.widget.Toast;
 import com.sse.eping.R;
 
 public class BaseUi<loadBar> extends Activity {
-
 	protected BaseApp app;
 	protected BaseHandler handler;
 	protected BaseTaskPool taskPool;
