@@ -60,6 +60,10 @@
         </activity> -->
         <activity android:name="com.app.ipinle.ui.TemplateUi">
         </activity>
+        <activity android:name="com.app.ipinle.ui.OrderDetailUi">
+        </activity>
+        <activity android:name="com.app.ipinle.ui.OrderListUi">
+        </activity>
         <activity android:name="com.app.ipinle.ui.ShowBusRouteUi" >
         </activity>
         <activity android:name="com.app.ipinle.ui.CarPoolUi"

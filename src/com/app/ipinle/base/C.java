@@ -19,6 +19,8 @@ public class C {
 //		public static final String index			= "/index/index";
 		public static final String login			= "/index.php/usercontrol/login";
 		public static final String submit			= "/index.php/rentApplyControl/rentApply";
+		public static final String ask_present_order= "/index.php/orderControl/getnoworder";
+		public static final String ask_history_order= "/index.php/orderControl/gethistoryorder";
 //		public static final String logout			= "/index/logout";
 //		public static final String faceView 		= "/image/faceView";
 //		public static final String faceList 		= "/image/faceList";
@@ -38,6 +40,9 @@ public class C {
 //		public static final int index				= 1001;
 		public static final int login				= 1002;
 		public static final int submit				= 1003;
+		public static final int ask_order_detail	= 1004;
+		public static final int ask_present_order	= 1005;
+		public static final int ask_history_order	= 1006;
 //		public static final int logout				= 1003;
 //		public static final int faceView			= 1004;
 //		public static final int faceList			= 1005;

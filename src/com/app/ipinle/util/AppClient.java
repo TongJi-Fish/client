@@ -58,10 +58,13 @@ public class AppClient {
 	public void initClient(String url){
 		// initialize API URL
 		this.apiUrl = C.api.base + url;
-		String apiSid = AppUtil.getSessionId();
-		if(apiSid != null && apiSid.length()>0){
-			this.apiUrl += "?sid=" + apiSid;
-		}
+//		String apiSid = AppUtil.getSessionId();
+//		if(apiSid != null && apiSid.length()>0){
+//			this.apiUrl += "?sid=" + apiSid;
+//			Log.i("test sid", apiSid);
+//		}else{
+//			Log.i("test sid","no sid here");
+//		}
 		// set client timeout
 		httpParams = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpParams, timeoutConnection);
@@ -95,13 +98,22 @@ public class AppClient {
 	
 	public String post (HashMap urlParams) throws Exception {
 		try {
+
 			HttpPost httpPost = new HttpPost(this.apiUrl);
+			//Log.i("test url", httpPost.toString());
 			List<NameValuePair> postParams = new ArrayList<NameValuePair>();
 			// get post parameters
 			Iterator it = urlParams.entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry entry = (Map.Entry) it.next();
 				postParams.add(new BasicNameValuePair(entry.getKey().toString(), entry.getValue().toString()));
+			}
+			String apiSid = AppUtil.getSessionId();
+			if(apiSid != null && apiSid.length()>0){
+				postParams.add(new BasicNameValuePair("sid", apiSid));
+				Log.i("test sid", apiSid);
+			}else{
+				Log.i("test sid","no sid here");
 			}
 			// set data charset
 			if (this.charset != null) {
@@ -116,6 +128,7 @@ public class AppClient {
 				Log.i("debug", httpResult);
 				return httpResult;
 			} else {
+				Log.i("debug", "nothing received!");
 				return null;
 			}
 		} catch (ConnectTimeoutException e) {

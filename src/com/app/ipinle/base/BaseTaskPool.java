@@ -88,6 +88,7 @@ public class BaseTaskPool {
 							httpResult = client.get();
 						// http post
 						} else {
+							Log.i("test", "start appclient to work.");
 							httpResult = client.post(this.taskArgs);
 						}
 					}
@@ -104,7 +105,7 @@ public class BaseTaskPool {
 					baseTask.onError(e.getMessage());
 					//Log.i(C.debug.login,"error:"+e.toString()+"message:"+e.getMessage().toString());
 					//Log.i(C.debug.login,"error get e 你好");
-					//Log.i(C.debug.login, "login baseTaskPool error1");
+					Log.i(C.debug.login, e.getMessage());
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

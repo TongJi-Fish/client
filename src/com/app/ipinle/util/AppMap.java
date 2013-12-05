@@ -10,7 +10,7 @@ import com.baidu.mapapi.map.MKEvent;
 public class AppMap {
 
 	private static BMapManager mBMapManager = null;
-	public static final String strKey = "sMW9h3hm9sSonRQ8Dd6cw03q";
+	public static final String strKey = "jdaeW3oEuCKgghxW2sygyx1f";
 	
 	public static <BMapMnager> BMapMnager getInstance(Activity at){
 		AppMap.mBMapManager = new BMapManager(at.getApplicationContext());

@@ -131,19 +131,7 @@ public class CarPoolUi extends BaseUi implements CloudListener {
 			@Override
 			public void onMapClick(GeoPoint point) {
 				// 在此处理地图单击事件
-				Log.i("test", "click1" + point.toString());
-			}
-
-			@Override
-			public void onMapDoubleClick(GeoPoint point) {
-				// 在此处理地图双击事件
-				Log.i("test", "click2");
-			}
-
-			@Override
-			public void onMapLongClick(GeoPoint point) {
-				// 在此处理地图长按事件
-				Log.i("test", "click3+" + point.getLatitudeE6() / 1E6 + ","
+				Log.i("test", "click1+" + point.getLatitudeE6() / 1E6 + ","
 						+ point.getLongitudeE6() / 1E6);
 				Toast.makeText(CarPoolUi.this, "point:" + point.toString(),
 						Toast.LENGTH_SHORT).show();
@@ -155,6 +143,18 @@ public class CarPoolUi extends BaseUi implements CloudListener {
 				// .show();
 
 				doSearchStationCloud(point);
+			}
+
+			@Override
+			public void onMapDoubleClick(GeoPoint point) {
+				// 在此处理地图双击事件
+				Log.i("test", "click2");
+			}
+
+			@Override
+			public void onMapLongClick(GeoPoint point) {
+				// 在此处理地图长按事件
+				Log.i("test", "click3" + point.toString());
 			}
 		};
 		mMapView.regMapTouchListner(mapTouchListener);
@@ -600,34 +600,49 @@ public class CarPoolUi extends BaseUi implements CloudListener {
 		
     }
 	
+    /**
+     * 
+     */
     @Override
 	public void onTaskComplete(int taskId, BaseMessage message){
 		//super.onTaskComplete(taskId, message);
 		/////////////////////////////////////////////////////////////////////////////
    	 SubmitFeedback feedback = null;
 		switch(taskId){
-		case C.task.submit:{
+		case C.task.submit:
 			try{
 				feedback = (SubmitFeedback)message.getResult("SubmitFeedback");
+				
+				if(feedback != null && feedback.getOrder_id() != null){
+					Toast.makeText(CarPoolUi.this, "预订成功",Toast.LENGTH_SHORT).show();
+					//跳转回第一屏！
+					BackwardPage();
+					BackwardPage();
+				}
+				else{
+					Toast.makeText(CarPoolUi.this, "预订失败，请稍候重试",Toast.LENGTH_SHORT).show();
+				}
 			}catch(Exception e){
 				e.printStackTrace();
-				this.toast(e.getMessage());
+				this.toast("预订失败，请稍候重试"+e.getMessage());
 			}finally{
 				unLockScreen();
 			}
 			
-			if(feedback.getFeedback().equals("Success")){
-				//跳转回第一屏！
-				Toast.makeText(CarPoolUi.this, "预订成功",Toast.LENGTH_SHORT).show();
-			}
-			else{
-				Toast.makeText(CarPoolUi.this, "预订失败，请稍候重试",Toast.LENGTH_SHORT).show();
-			}
-			
-		}
+			break;
 		}
 		this.hideLoadBar();
 	}
+
+    /**
+     * 
+     */
+    @Override
+    public void onTaskError(){
+    	super.onTaskError();
+    	this.unLockScreen();
+    	Log.i("test", "task error");
+    }
     
     public void lockScreen(){
 		if(this.submit!=null)
