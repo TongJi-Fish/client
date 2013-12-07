@@ -10,48 +10,53 @@ import android.util.Log;
 import com.app.ipinle.util.AppClient;
 
 public class BaseTaskPool {
-	
+
 	// task thread pool
 	static private ExecutorService taskPool;
-	
+
 	// for HttpUtil.getNetType
 	private Context context;
-	
-	public BaseTaskPool (BaseUi ui) {
+
+	public BaseTaskPool(BaseUi ui) {
 		this.context = ui.getContext();
 		taskPool = Executors.newCachedThreadPool();
 	}
-	
+
 	// http post task with params
-	public void addTask (int taskId, String taskUrl, HashMap<String, String> taskArgs, BaseTask baseTask, int delayTime) {
+	public void addTask(int taskId, String taskUrl,
+			HashMap<String, String> taskArgs, BaseTask baseTask, int delayTime) {
 		baseTask.setId(taskId);
 		try {
-			taskPool.execute(new TaskThread(context, taskUrl, taskArgs, baseTask, delayTime));
+			taskPool.execute(new TaskThread(context, taskUrl, taskArgs,
+					baseTask, delayTime));
 		} catch (Exception e) {
 			taskPool.shutdown();
 		}
 	}
-	
+
 	// http post task without params
-	public void addTask (int taskId, String taskUrl, BaseTask baseTask, int delayTime) {
+	public void addTask(int taskId, String taskUrl, BaseTask baseTask,
+			int delayTime) {
 		baseTask.setId(taskId);
 		try {
-			taskPool.execute(new TaskThread(context, taskUrl, null, baseTask, delayTime));
+			taskPool.execute(new TaskThread(context, taskUrl, null, baseTask,
+					delayTime));
 		} catch (Exception e) {
 			taskPool.shutdown();
 		}
 	}
-	
+
 	// custom task
-	public void addTask (int taskId, BaseTask baseTask, int delayTime) {
+	public void addTask(int taskId, BaseTask baseTask, int delayTime) {
 		baseTask.setId(taskId);
 		try {
-			taskPool.execute(new TaskThread(context, null, null, baseTask, delayTime));
+			taskPool.execute(new TaskThread(context, null, null, baseTask,
+					delayTime));
 		} catch (Exception e) {
 			taskPool.shutdown();
 		}
 	}
-	
+
 	// task thread logic
 	private class TaskThread implements Runnable {
 		private Context context;
@@ -59,13 +64,17 @@ public class BaseTaskPool {
 		private HashMap<String, String> taskArgs;
 		private BaseTask baseTask;
 		private int delayTime = 0;
-		public TaskThread(Context context, String taskUrl, HashMap<String, String> taskArgs, BaseTask baseTask, int delayTime) {
+
+		public TaskThread(Context context, String taskUrl,
+				HashMap<String, String> taskArgs, BaseTask baseTask,
+				int delayTime) {
 			this.context = context;
 			this.taskUrl = taskUrl;
 			this.taskArgs = taskArgs;
 			this.baseTask = baseTask;
 			this.delayTime = delayTime;
 		}
+
 		@Override
 		public void run() {
 			try {
@@ -80,37 +89,35 @@ public class BaseTaskPool {
 					if (this.taskUrl != null) {
 						// init app client
 						AppClient client = new AppClient(this.taskUrl);
-//						if (HttpUtil.WAP_INT == HttpUtil.getNetType(context)) {
-//							client.useWap();
-//						}
-						// http get
-						if (taskArgs == null) {
-							httpResult = client.get();
-						// http post
-						} else {
-							Log.i("test", "start appclient to work.");
-							httpResult = client.post(this.taskArgs);
-						}
+						// if (HttpUtil.WAP_INT == HttpUtil.getNetType(context))
+						// {
+						// client.useWap();
+						// }
+						Log.i("test", "start appclient to work.");
+						httpResult = client.post(this.taskArgs);
+
 					}
 					// remote task
 					if (httpResult != null) {
-						//Log.i(C.debug.login, "not null----after do post before complete");
+						// Log.i(C.debug.login,
+						// "not null----after do post before complete");
 						baseTask.onComplete(httpResult);
-					// local task
+						// local task
 					} else {
-						//Log.i(C.debug.login, "is null----after do post before complete");
+						// Log.i(C.debug.login,
+						// "is null----after do post before complete");
 						baseTask.onComplete();
 					}
 				} catch (Exception e) {
 					baseTask.onError(e.getMessage());
-					//Log.i(C.debug.login,"error:"+e.toString()+"message:"+e.getMessage().toString());
-					//Log.i(C.debug.login,"error get e 你好");
+					// Log.i(C.debug.login,"error:"+e.toString()+"message:"+e.getMessage().toString());
+					// Log.i(C.debug.login,"error get e 你好");
 					Log.i(C.debug.login, e.getMessage());
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				baseTask.onError(e.getMessage());
-				//Log.i(C.debug.login, "login baseTaskPool error2");
+				// Log.i(C.debug.login, "login baseTaskPool error2");
 			} finally {
 				try {
 					baseTask.onStop();
@@ -120,5 +127,5 @@ public class BaseTaskPool {
 			}
 		}
 	}
-	
+
 }

@@ -74,28 +74,6 @@ public class AppClient {
 		
 	}
 	
-	public String get () throws Exception {
-		try {
-			HttpGet httpGet = new HttpGet(this.apiUrl);
-			//Log.w("AppClient.get.url", this.apiUrl);
-			// send get request
-			HttpResponse httpResponse = httpClient.execute(httpGet);
-			if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-				//String httpResult = resultFilter(httpResponse.getEntity());
-				String httpResult = EntityUtils.toString(httpResponse.getEntity());
-				//Log.w("AppClient.get.result", httpResult);
-				return httpResult;
-			} else {
-				return null;
-			}
-		} catch (ConnectTimeoutException e) {
-			throw new Exception(C.err.network);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
 	public String post (HashMap urlParams) throws Exception {
 		try {
 

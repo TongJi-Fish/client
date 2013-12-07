@@ -6,13 +6,11 @@ import com.app.ipinle.base.*;
 public class User extends BaseModel{
 
 	// model columns
-	public final static String COL_ID = "id";
 	public final static String COL_SID = "sid";
 	public final static String COL_NAME = "name";
 	public final static String ID_NUM = "id_num";
 	public final static String DRIVER_ID = "driver_id";
 	
-	private String id;
 	private String sid;
 	private String name;
 	private String id_num;
@@ -31,14 +29,6 @@ public class User extends BaseModel{
 	}
 	
 	public User(){ }
-	
-	public void setId(String id){
-		this.id = id;
-	}
-	
-	public String getId(){
-		return this.id;
-	}
 	
 	public void setSid(String sid){
 		this.sid = sid;

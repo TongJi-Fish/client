@@ -3,98 +3,118 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_main6"
-    android:orientation="vertical"
-    android:gravity="center" >
-    
+    android:gravity="center"
+    android:orientation="vertical" >
+
     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-            <TextView   
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="25sp"
-                android:text="订单号：" />
-            <TextView
-                android:id="@+id/order_nub"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="25sp"
-                android:text="无" />   
-        </LinearLayout>
-        
-    <LinearLayout
+            android:text="订单号："
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/order_nub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-            <TextView   
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="25sp"
-                android:text="业务时间：" />
-            <TextView
-                android:id="@+id/order_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="25sp"
-                android:text="无" />   
-        </LinearLayout>
-        
+            android:text="无"
+            android:textSize="25sp" />
+    </LinearLayout>
+
     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-            <TextView   
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="25sp"
-                android:text="起始地点：" />
-            <TextView
-                android:id="@+id/order_start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="25sp"
-                android:text="无" />   
-        </LinearLayout>
-        
-    <LinearLayout
+            android:text="时间："
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/order_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-            <TextView   
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="25sp"
-                android:text="目的地点：" />
-            <TextView
-                android:id="@+id/order_terminal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="25sp"
-                android:text="无" />   
-        </LinearLayout>
-        
+            android:text="无"
+            android:textSize="25sp" />
+    </LinearLayout>
+
     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-            <TextView   
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="25sp"
-                android:text="业务类型" />
-            <TextView
-                android:id="@+id/order_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="25sp"
-                android:text="无" />   
-        </LinearLayout>
+            android:text="起始地点："
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/order_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="无"
+            android:textSize="25sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="目的地点："
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/order_terminal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="无"
+            android:textSize="25sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="业务类型:"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/order_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="无"
+            android:textSize="25sp" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/detail_ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:text="确认" />
+
+    <include layout="@layout/ui_load_bar" >
+    </include>
+"
 
 </LinearLayout>

@@ -44,11 +44,8 @@ public class TemplateUi extends BaseUi {
 			// 如果没有继承TabActivity时，通过该种方法加载启动tabHost
 			tabHost.setup(this.getLocalActivityManager());
 
-			tabHost.addTab(tabHost.newTabSpec(TAB_BUS_ROUTE)
-					.setIndicator(TAB_BUS_ROUTE).setIndicator("VIEW")
-					.setContent(new Intent(this, ShowBusRouteUi.class)));
 			tabHost.addTab(tabHost.newTabSpec(TAB_CARPOOL)
-					.setIndicator(TAB_CARPOOL)
+					.setIndicator(TAB_CARPOOL).setIndicator("VIEW")
 					.setContent(new Intent(this, CarPoolUi.class)));
 			tabHost.addTab(tabHost.newTabSpec(TAB_NAVI).setIndicator(TAB_NAVI)
 					.setContent(new Intent(this, NavigationUi.class)));
@@ -58,10 +55,6 @@ public class TemplateUi extends BaseUi {
 				group.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 					public void onCheckedChanged(RadioGroup group, int checkedId) {
 						switch (checkedId) {
-						case R.id.radio_button0:
-							tabHost.setCurrentTabByTag(TAB_BUS_ROUTE);
-							//forward(ShowBusRouteUi.class);
-							break;
 						case R.id.radio_button1:
 							tabHost.setCurrentTabByTag(TAB_CARPOOL);
 							// forward(CarPoolUi.class);
@@ -91,52 +84,24 @@ public class TemplateUi extends BaseUi {
 		return super.onCreateOptionsMenu(menu);*/
 		final MenuItem present_order = menu.add("当前业务信息");
 		final MenuItem history_order = menu.add("历史业务信息");
-		final Intent show_detail = new Intent(this,LoginUi.class);
+		final Intent show_detail = new Intent(this,OrderDetailUi.class);
 		final Intent show_list = new Intent(this,OrderListUi.class);
+		//final Intent show_myeping = new Intent(this,OrderDetailUi.class);
 		
 		present_order.setOnMenuItemClickListener(new OnMenuItemClickListener(){
 			@Override
 			public boolean onMenuItemClick(MenuItem item){
-				Log.i("test", "choose menu item present_order.");
-				//这里会有一些测试代码，正常后删去///////////////////////////////////////////////////
-//				Bundle bundle = new Bundle();
-//				OrderList orderList = new OrderList();
-//				List<String> l = new ArrayList();
-//				l.add("a");
-//				l.add("ab");
-//				l.add("ac");
-//				l.add("ad");
-//				l.add("aeeeeee");
-//				l.add("afffff");
-//				l.add("aggggggggg");
-//				l.add("aggggggggg");
-//				l.add("aggggggggg");
-//				l.add("aggggggggg");
-//				l.add("aggggggggg");
-//				l.add("aggggggggg");
-//				orderList.setOrderList(l);
-//				bundle.putSerializable("order_list_key", orderList);
-//				show_list.putExtra("type", "order_list");  
-//				show_list.putExtras(bundle);
-					
-				startActivity(show_list);
-				//forward(OrderListUi.class);
-				//doTaskAskHistory();
+				
+				show_detail.putExtra("order_id", "myorder");
+				startActivity(show_detail);
 				return true;
-				
-				
-				//测试代码结束//////////////////////////////////////////////////////////////////////
-				//一下为正常代码，应解除注释
-				/*
-				doTaskAskPresent();
-				return false;*/
 			}
 		});
 		history_order.setOnMenuItemClickListener(new OnMenuItemClickListener(){
 			@Override
 			public boolean onMenuItemClick(MenuItem item){
 				
-				doTaskAskHistory();
+				startActivity(show_list);
 				return false;
 			}
 		});
@@ -151,12 +116,12 @@ public class TemplateUi extends BaseUi {
  		HashMap<String, String> urlParams = new HashMap<String,String>();
  		
  		//urlParams.put("sid", AppUser.getUser().getSid());
- 		urlParams.put("id", AppUser.getUser().getId());
+ 		//urlParams.put("id", AppUser.getUser().getId());
 
  		try{
  			this.showLoadBar();
  			//this.lockScreen();// 锁定屏幕，等待过程中不能
- 			this.doTaskAsync(C.task.ask_present_order, C.api.ask_present_order, urlParams);
+ 			this.doTaskAsync(C.task.ask_now_order, C.api.ask_now_order, urlParams);
  			//this.hideLoadBar();
  		}catch(Exception e){
  			e.printStackTrace();
@@ -171,7 +136,7 @@ public class TemplateUi extends BaseUi {
  		HashMap<String, String> urlParams = new HashMap<String,String>();
  		
  		//urlParams.put("sid", AppUser.getUser().getSid());
- 		urlParams.put("id", AppUser.getUser().getId());
+ 		//urlParams.put("id", AppUser.getUser().getName());
 
  		try{
  			this.showLoadBar();
@@ -189,7 +154,7 @@ public class TemplateUi extends BaseUi {
 		final Intent show_list = new Intent(this,OrderListUi.class);
 		Bundle bundle = new Bundle();
 		OrderList orderList = null;
-		if(taskId == C.task.ask_history_order||taskId == C.task.ask_present_order){
+		if(taskId == C.task.ask_history_order||taskId == C.task.ask_now_order){
 			try{
 				orderList = (OrderList)message.getResult("OrderList");
 				if(orderList.getOrderList().size()==0){

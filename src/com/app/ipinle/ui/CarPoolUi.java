@@ -70,6 +70,10 @@ public class CarPoolUi extends BaseUi implements CloudListener {
 	private int page_now;
 	private int[] pageName;
 
+
+	private int mYear; //获取当前年份 
+	private int mMonth;//获取当前月份 
+	private int mDay;//获取当前月份的日期号码 
 	private int mHour;
 	private int mMinute;
 	private EditText showTime = null;
@@ -266,6 +270,7 @@ public class CarPoolUi extends BaseUi implements CloudListener {
 			switch (v.getId()) {
 			case (R.id.drive_car): {
 				// 第一屏中的“我要开车”按钮
+				Log.i("test", "drive");
 				message.setDrive(true);
 				// ++count;
 				ForwardPage();// 前进一页
@@ -274,6 +279,7 @@ public class CarPoolUi extends BaseUi implements CloudListener {
 				break;
 			}
 			case (R.id.carpool): {
+				Log.i("test", "carpool");
 				message.setDrive(false);
 				// ++count;
 				// initScreen2();
@@ -504,16 +510,19 @@ public class CarPoolUi extends BaseUi implements CloudListener {
 	 */
 	private void setTimeOfDay() {
 		final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR); //获取当前年份 
+        mMonth = c.get(Calendar.MONTH);//获取当前月份 
+        mDay = c.get(Calendar.DAY_OF_MONTH);//获取当前月份的日期号码 
 		mHour = c.get(Calendar.HOUR_OF_DAY);
 		mMinute = c.get(Calendar.MINUTE);
-		updateTimeDisplay();
+			
 	}
 
 	/**
 	 * 更新时间显示
 	 */
 	private void updateTimeDisplay() {
-		showTime.setText(new StringBuilder().append(mHour).append(":")
+		showTime.setText(new StringBuilder().append(mYear).append("-").append(mMonth).append("-").append(mDay).append(" ").append(mHour).append(":")
 				.append((mMinute < 10) ? "0" + mMinute : mMinute));
 	}
 
@@ -587,7 +596,9 @@ public class CarPoolUi extends BaseUi implements CloudListener {
    	 
 		HashMap<String, String> urlParams = new HashMap<String,String>();
 		urlParams.put("type", Boolean.toString(this.message.isDrive()));
+		Log.i("test", Boolean.toString(this.message.isDrive()));
 		urlParams.put("time", this.message.getTime().toString());
+		Log.i("test time", this.message.getTime().toString());
 		urlParams.put("start_point", this.message.getStart_point());
 		urlParams.put("terminal_point", this.message.getTerminal_point());
 		try{
@@ -608,8 +619,7 @@ public class CarPoolUi extends BaseUi implements CloudListener {
 		//super.onTaskComplete(taskId, message);
 		/////////////////////////////////////////////////////////////////////////////
    	 SubmitFeedback feedback = null;
-		switch(taskId){
-		case C.task.submit:
+		if(taskId==C.task.submit || taskId==C.task.carpool){
 			try{
 				feedback = (SubmitFeedback)message.getResult("SubmitFeedback");
 				
@@ -629,7 +639,6 @@ public class CarPoolUi extends BaseUi implements CloudListener {
 				unLockScreen();
 			}
 			
-			break;
 		}
 		this.hideLoadBar();
 	}

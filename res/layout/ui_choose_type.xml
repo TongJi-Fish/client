@@ -12,18 +12,18 @@
 	    android:gravity="bottom"/> -->
 	    
 	<Button
-                android:id="@+id/drive_car"
-                android:layout_width="200dp"
-	    		android:layout_height="100dp"
-                android:layout_marginTop="100dp"
-                android:text="我要开车" />
-
-	<Button
                 android:id="@+id/carpool"
                 android:layout_width="200dp"
 	    		android:layout_height="100dp"
-                android:layout_marginTop="-200dp"
+                android:layout_marginTop="100dp"
                 android:text="我要拼车" />
+
+	<Button
+                android:id="@+id/drive_car"
+                android:layout_width="200dp"
+	    		android:layout_height="100dp"
+                android:layout_marginTop="-200dp"
+                android:text="我要开车" />
 
 
 </LinearLayout>

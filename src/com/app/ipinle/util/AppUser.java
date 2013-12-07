@@ -21,7 +21,6 @@ public class AppUser {
 	
 	static public void setUser(User us){
 		User user = User.getInstance();
-		user.setId(us.getId());
 		user.setId_num(us.getId_num());
 		user.setIsLogin(us.getIsLogin());
 		user.setName(us.getName());

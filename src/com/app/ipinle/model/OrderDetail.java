@@ -17,6 +17,8 @@ public class OrderDetail extends BaseModel implements Serializable{
 	private String orderType;
 	private String orderStart;
 	private String orderTerminal;
+	private String user;
+	private String carId;
 	
 	public String getOrderId() {
 		return orderId;
@@ -77,5 +79,21 @@ public class OrderDetail extends BaseModel implements Serializable{
 	}
 	
 	public OrderDetail(){ }
+
+	public String getCarId() {
+		return carId;
+	}
+
+	public void setCarId(String carId) {
+		this.carId = carId;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
 
 }
